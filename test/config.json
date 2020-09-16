@@ -1,7 +1,7 @@
 {
   "protocol": "amqp",
-  "hostname": "127.0.0.1",
+  "hostname": "cloud.byteark.cn",
   "port": 30433,
   "username": "admin",
-  "password": "xxxxx"
+  "password": "PwDF0hVBkNpkZGfkNI3Y"
 }

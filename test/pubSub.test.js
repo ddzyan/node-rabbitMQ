@@ -1,21 +1,22 @@
+// hello word
 const assert = require('power-assert');
 
 const urlOpt = require('./config.json');
 const { RabbitMQ, WORKER_MODE } = require('../lib/RabbiMQ');
 
-let exchangerName = 'test_ex';
-let workerMode = WORKER_MODE.TOPIC;
-
-describe('amqp topic producer', () => {
+let queueName = 'task';
+let workerMode = WORKER_MODE.PUB_SUB;
+let message = 'hello word';
+let exchangerName = 'subPub_ex';
+let routeKey = '';
+describe('amqp pubSub producer', () => {
   let rabbitMQ = null;
 
   before(() => {
     rabbitMQ = new RabbitMQ({
       urlOpt,
       exchangerName,
-      exchangerOptions: {
-        durable: false,
-      },
+      queueName,
       workerMode,
     });
   });
@@ -27,40 +28,34 @@ describe('amqp topic producer', () => {
   });
 
   it('connect test', async () => {
-    const [connect, channel, exchanger] = await rabbitMQ.assert();
+    const [connect, channel, exchanger, queue] = await rabbitMQ.assert();
     assert(connect, 'connect error');
     assert(exchanger, 'exchanger error');
     assert(channel, 'channel error');
+    assert(queue, 'queue error');
   });
 
   it('publish test', async () => {
-    const res = await rabbitMQ.publish('hello word', 'info');
+    const res = await rabbitMQ.publish(message);
     assert.equal(res, true, 'publish message error');
   });
 });
 
-describe('amqp topic consumer', () => {
+describe('amqp pubSub consumer', () => {
   let rabbitMQ = null;
-  let routeKey = 'info';
-  let queueName = 'direct';
+
   before(() => {
     rabbitMQ = new RabbitMQ({
       urlOpt,
       exchangerName,
-      exchangerOptions: {
-        durable: false,
-      },
       queueName,
-      queueOptions: {
-        exclusive: false, // 独占模式
-      },
       workerMode,
     });
   });
 
-  after(() => {
-    if (rabbitMQ && rabbitMQ.connect && rabbitMQ.queue) {
-      rabbitMQ.close();
+  after(async () => {
+    if (rabbitMQ && rabbitMQ.connect) {
+      await rabbitMQ.close();
     }
   });
 
@@ -77,21 +72,15 @@ describe('amqp topic consumer', () => {
     assert.ok(res, true, 'bindQueue error');
   });
 
-  // 由于交换机不具备存储message 的能力所以无法进行测试
   it.skip('subscribe message test', done => {
     rabbitMQ.subscribe(
       msgObj => {
         assert(msgObj, 'msg is error');
-        assert.equal(
-          msgObj.msg.fields.routingKey,
-          'info',
-          'routingKey is error'
-        );
-        assert.equal(msgObj.toString(), 'hello word', 'msg is error');
+        assert.equal(msgObj.toString(), message, 'msg is error');
         msgObj.ack();
         done();
       },
-      { ack: true }
+      { ack: false }
     );
   });
 
