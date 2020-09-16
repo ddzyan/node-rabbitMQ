@@ -1,6 +1,6 @@
 ## 简介
 
-这是一个使用 amqp 协议的 nodejs 模块
+这是一个使用 amqp 协议的 nodejs 消息队列模块包
 
 ## 支持模式
 
@@ -15,7 +15,7 @@
 安装
 
 ```shell
-npm install node-rabbitMQ --save
+npm install rabbitmq-nodelib --save
 ```
 
 测试
@@ -31,7 +31,7 @@ npm run test
 producer
 
 ```js
-const RabbitMQ = require('node-rabbitMQ');
+const RabbitMQ = require('rabbitmq-nodelib');
 
 const rabbitMQ = new RabbitMQ({
   urlOpt: {
@@ -56,7 +56,7 @@ rabbitMQ.assert().then(() => {
 consumer
 
 ```js
-const RabbitMQ = require('node-rabbitMQ');
+const RabbitMQ = require('rabbitmq-nodelib');
 
 const rabbitMQ = new RabbitMQ({
   urlOpt: {

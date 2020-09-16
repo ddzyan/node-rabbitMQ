@@ -1,6 +1,6 @@
 {
-  "name": "node-rabbitMQ",
-  "version": "1.0.0",
+  "name": "rabbitmq-nodelib",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,6 +16,10 @@
   "devDependencies": {
     "mocha": "^8.1.3",
     "power-assert": "^1.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ddzyan/node-rabbitMQ.git"
   },
   "files": [
     "lib",
