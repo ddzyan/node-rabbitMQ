@@ -83,7 +83,6 @@ rabbitMQ.assert(() => {
       msgObj => {
         console.log(msgObj.toString());
         msgObj.ack();
-        done();
       },
       { ack: true }
     );
