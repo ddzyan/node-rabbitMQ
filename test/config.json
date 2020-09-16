@@ -1,0 +1,7 @@
+{
+  "protocol": "amqp",
+  "hostname": "127.0.0.1",
+  "port": 30433,
+  "username": "admin",
+  "password": "xxxxx"
+}
