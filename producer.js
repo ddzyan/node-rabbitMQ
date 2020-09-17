@@ -8,18 +8,10 @@ const { RabbitMQ, WORKER_MODE } = require('./lib/RabbiMQ');
     exchangerOptions: {
       durable: false,
     },
-    queueName: 'shell',
-    queueOptions: {
-      exclusive: false, // 独占模式
-    },
     workerMode: WORKER_MODE.TOPIC,
   });
 
   await rabbitMQ.assert();
 
-  await rabbitMQ.bindQueue('fusion.#');
-
-  rabbitMQ.subscribe(msg => {
-    console.log(msg.toString());
-  });
+  await rabbitMQ.publish('hello word', 'fusion.abc');
 })();
