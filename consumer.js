@@ -17,7 +17,7 @@ const { RabbitMQ, WORKER_MODE } = require('./lib/RabbiMQ');
 
   await rabbitMQ.assert();
 
-  await rabbitMQ.bindQueue('fusion.#');
+  await rabbitMQ.bindQueue(0);
 
   rabbitMQ.subscribe(msg => {
     console.log(msg.toString());
