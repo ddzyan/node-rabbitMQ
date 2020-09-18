@@ -17,9 +17,19 @@ const { RabbitMQ, WORKER_MODE } = require('./lib/RabbiMQ');
 
   await rabbitMQ.assert();
 
-  await rabbitMQ.bindQueue(0);
+  await rabbitMQ.bindQueue(['fusion.macAddr', 'all.*']);
 
-  rabbitMQ.subscribe(msg => {
-    console.log(msg.toString());
+  rabbitMQ.subscribe(
+    msg => {
+      console.log(msg.toString());
+    },
+    {
+      noAck: true,
+    }
+  );
+
+  process.once('SIGINT', async () => {
+    console.log('意外退出');
+    await rabbitMQ.close();
   });
 })();

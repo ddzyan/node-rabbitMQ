@@ -13,5 +13,7 @@ const { RabbitMQ, WORKER_MODE } = require('./lib/RabbiMQ');
 
   await rabbitMQ.assert();
 
-  await rabbitMQ.publish('hello word', 'fusion.abc');
+  await rabbitMQ.publish('hello word', 'all.*');
+
+  await rabbitMQ.close();
 })();

@@ -12,13 +12,15 @@
 
 ## 使用
 
-安装
+### 安装
 
 ```shell
 npm install rabbitmq-nodelib --save
 ```
 
-测试
+### 测试
+
+请先修改 test/config.json 中的 rabbitMQ 配置信息
 
 ```shell
 npm run test
@@ -26,66 +28,4 @@ npm run test
 
 ### 示例
 
-具体代码可以参考 test
-
-producer
-
-```js
-const RabbitMQ = require('rabbitmq-nodelib');
-
-const rabbitMQ = new RabbitMQ({
-  urlOpt: {
-    protocol: 'amqp',
-    hostname: 'localhost',
-    port: 5672,
-    username: 'admin',
-    password: 'xxx',
-  },
-  exchangerName: 'test_ex',
-  exchangerOptions: {
-    type: 'topic',
-    durable: false,
-  },
-});
-
-rabbitMQ.assert().then(() => {
-  rabbitMQ.publish('hello word', 'info');
-});
-```
-
-consumer
-
-```js
-const RabbitMQ = require('rabbitmq-nodelib');
-
-const rabbitMQ = new RabbitMQ({
-  urlOpt: {
-    protocol: 'amqp',
-    hostname: 'localhost',
-    port: 5672,
-    username: 'admin',
-    password: 'xxx',
-  },
-  exchangerName: 'test_ex',
-  exchangerOptions: {
-    type: 'topic',
-    durable: false,
-  },
-  queueName: 'direct',
-  queueOptions: {
-    exclusive: false, // 独占模式
-  },
-});
-
-rabbitMQ.assert(() => {
-  rabbitMQ.bindQueue('info').then(() => {
-    rabbitMQ.subscribe(
-      msgObj => {
-        console.log(msgObj.toString());
-        msgObj.ack();
-      },
-      { ack: true }
-    );
-  });
-});
-```
+具体代码可以参考 producer.js , consumer.js
