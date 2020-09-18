@@ -12,8 +12,7 @@ const { RabbitMQ, WORKER_MODE } = require('./lib/RabbiMQ');
   });
 
   await rabbitMQ.assert();
-
-  await rabbitMQ.publish('hello word', 'all.*');
-
+  const res = await rabbitMQ.publish('hello word', 'all.*');
+  if (res) console.log('信息发送成功');
   await rabbitMQ.close();
 })();

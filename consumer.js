@@ -4,20 +4,15 @@ const { RabbitMQ, WORKER_MODE } = require('./lib/RabbiMQ');
 (async function () {
   const rabbitMQ = new RabbitMQ({
     urlOpt,
-    exchangerName: 'fusion_inspect',
-    exchangerOptions: {
-      durable: false,
-    },
-    queueName: 'shell',
+    queueName: 'fusion_result',
     queueOptions: {
       exclusive: false, // 独占模式
+      durable: false,
     },
-    workerMode: WORKER_MODE.TOPIC,
+    workerMode: WORKER_MODE.NORMAL,
   });
 
   await rabbitMQ.assert();
-
-  await rabbitMQ.bindQueue(['fusion.macAddr', 'all.*']);
 
   rabbitMQ.subscribe(
     msg => {
