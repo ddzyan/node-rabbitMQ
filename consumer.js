@@ -12,10 +12,13 @@ const main = async () => {
     });
     const session = rabbitMQ.createQueueSession();
     const consumer = await session.createConsumer('hello');
-    consumer.receive(msg => {
-      console.log(" [x] Received '%s'", msg.content.toString());
-    }),
-      {};
+    const receiveEvent = consumer.receive({ noAck: false });
+
+    receiveEvent.on('message', msg => {
+      console.log(" [x] Received '%s'", msg.getContent());
+      console.log('exchange=', msg.getExchange());
+      consumer.ack(msg.getMsg());
+    });
   } catch (error) {
     console.error(error);
   }
