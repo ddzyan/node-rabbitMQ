@@ -1,6 +1,8 @@
 ## 简介
 
-这是一个使用 amqp 协议的 nodejs 消息队列模块包
+采用 java JMS 思想封装的 nodejs 版本的支持 amqp 消息协议的模块包
+
+- RabbitMQ
 
 ## 支持模式
 
@@ -16,14 +18,6 @@
 
 ```shell
 npm install rabbitmq-nodelib --save
-```
-
-### 测试
-
-请先修改 test/config.json 中的 rabbitMQ 配置信息
-
-```shell
-npm run test
 ```
 
 ### 示例
