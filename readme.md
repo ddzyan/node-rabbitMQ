@@ -22,4 +22,4 @@ npm install rabbitmq-nodelib --save
 
 ### 示例
 
-具体代码可以参考 producer.js , consumer.js
+具体代码可以参考 example
