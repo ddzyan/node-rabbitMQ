@@ -15,9 +15,9 @@ const main = async () => {
     const rabbitMQ = new RabbitMQ();
     await rabbitMQ.createConnection(rabbitMQConfig);
     const session = rabbitMQ.createQueueSession();
-    const producer = await session.createProducer({ queueName: 'hello' });
+    const producer = await session.createProducer();
     const msg = session.createTextMessage('this is good');
-    producer.send(msg);
+    producer.send('hello', msg);
     session.close();
   } catch (error) {
     console.error(error);

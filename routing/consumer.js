@@ -12,22 +12,23 @@ const main = async () => {
      */
     await rabbitMQ.createConnection(rabbitMQConfig);
     const session = rabbitMQ.createQueueSession();
-    const consumer = await session.createConsumer(
+    const consumer = await session.createConsumer();
+    await consumer.createQueue(
       { queueName: 'info', key: 'info' },
       { exchangerName: 'direct_logs', exchangerType: session.EXCHANGER_TYPE.DIRECT }
     );
-    const receiveEvent = consumer.receive({ noAck: false });
+    const receiveEvent = await consumer.receive({ noAck: false });
 
     console.log(' [*] Waiting for logs. To exit press CTRL+C');
     receiveEvent.on('message', msg => {
       console.log(" [x] Received '%s'", msg.getContent());
-      console.log('exchange=', msg.getExchange());
-      consumer.ack(msg.getMsg());
+      //consumer.ack(msg.getMsg());
+      consumer.nack(msg.getMsg());
     });
 
-    process.once('SIGINT', function () {
+    process.once('SIGINT', async () => {
+      await session.close();
       console.log('意外退出');
-      session.close();
     });
   } catch (error) {
     console.error(error);

@@ -12,7 +12,8 @@ const main = async () => {
     const rabbitMQ = new RabbitMQ();
     await rabbitMQ.createConnection(rabbitMQConfig);
     const session = rabbitMQ.createQueueSession();
-    const consumer = await session.createConsumer({ queueName: 'hello' });
+    const consumer = await session.createConsumer();
+    await consumer.createQueue({ queueName: 'hello' });
     const receiveEvent = consumer.receive({ noAck: false });
     console.log(' [*] Waiting for logs. To exit press CTRL+C');
     receiveEvent.on('message', msg => {

@@ -14,12 +14,14 @@ const main = async () => {
     const rabbitMQ = new RabbitMQ();
     await rabbitMQ.createConnection(rabbitMQConfig);
     const session = rabbitMQ.createQueueSession();
-    const producer = await session.createProducer(
-      { queueName: 'info', key: 'info' },
-      { exchangerName: 'direct_logs', exchangerType: session.EXCHANGER_TYPE.DIRECT }
-    );
+    const producer = await session.createProducer();
     const msg = session.createTextMessage('this is good');
-    producer.send(msg);
+    const res = await producer.publish(
+      'info',
+      { exchangerName: 'direct_logs', exchangerType: session.EXCHANGER_TYPE.DIRECT },
+      msg
+    );
+    console.log(res);
     session.close();
   } catch (error) {
     console.error(error);
