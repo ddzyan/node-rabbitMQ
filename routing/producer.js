@@ -11,7 +11,6 @@ const main = async () => {
      * 5. 发送消息
      * 6. 关闭连接
      */
-
     const rabbitMQ = new RabbitMQ();
     await rabbitMQ.createConnection(rabbitMQConfig);
     const session = rabbitMQ.createQueueSession();
